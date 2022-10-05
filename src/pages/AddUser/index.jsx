@@ -34,15 +34,14 @@ function Index() {
     })
     .required();
 
-  const { register, handleSubmit } = useForm({ resolver: yupResolver(schema) });
-  
+  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schema) });
+
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation(createUser, {
     onSuccess: data => {
       console.log(data);
       const message = "success"
-      alert(message)
     },
     onError: () => {
       alert("there was an error")
@@ -69,39 +68,28 @@ function Index() {
             type="text"
             mb="3"
             {...register("firstName")}
-            // value={input}
-            // onChange={handleInputChange}
           />
+          {errors.firstName && <p style={{color: 'red'}}>{errors.firstName.message}</p>}
           <FormLabel>Last Name</FormLabel>
           <Input
             type="text"
             mb="3"
             {...register("lastName")}
-            // value={input}
-            // onChange={handleInputChange}
           />
+          {errors.lastName && <p style={{color: 'red'}}>{errors.lastName.message}</p>}
           <FormLabel>Birth Date</FormLabel>
           <Input
             type="date"
             mb="3"
             {...register("birthDate")}
-            // value={input}
-            // onChange={handleInputChange}
           />
+          {errors.birthDate && <p style={{color: 'red'}}>{errors.birthDate.message}</p>}
           <FormLabel>Email</FormLabel>
           <Input
             type="email"
             {...register("email")}
-            // value={input}
-            // onChange={handleInputChange}
           />
-          {/* {!isError ? (
-        <FormHelperText>
-          Enter the email you'd like to receive the newsletter on.
-        </FormHelperText>
-      ) : (
-        <FormErrorMessage>Email is required.</FormErrorMessage>
-      )} */}
+          {errors.email && <p style={{color: 'red'}}>{errors.email.message}</p>}
           <Button colorScheme="blue" mt="5" type="submit">
             Save User
           </Button>

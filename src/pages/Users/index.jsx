@@ -11,22 +11,28 @@ import {
   Container,
   Button,
 } from "@chakra-ui/react";
-import { useQuery } from "react-query";
-import {useNavigate} from 'react-router-dom'
+import { useQuery, useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Index() {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { isLoading, error, data } = useQuery("users", () =>
     axios.get("http://localhost:3000/users").then((res) => res.data)
   );
 
-  const deleteUser = (user) => {};
+  const deleteUser = (user) => {
+    axios
+      .delete(`http://localhost:3000/users/${user._id}`)
+      .then((res) => console.log(res));
+    queryClient.invalidateQueries("create");
+  };
 
   const updateUser = (user) => {};
   const addUserPage = () => {
-    navigate('/users/add')
-  }
+    navigate("/users/add");
+  };
 
   return (
     <Container maxW="1500px" mt="4">
@@ -34,7 +40,7 @@ function Index() {
       {error && <h2>Oops, error...</h2>}
       {data && (
         <>
-          <Button colorScheme="blue" mb='5' onClick={()=> addUserPage()}>
+          <Button colorScheme="blue" mb="5" onClick={() => addUserPage()}>
             Add User
           </Button>
           <TableContainer>
