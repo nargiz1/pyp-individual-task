@@ -15,6 +15,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
 function Index() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -26,7 +27,7 @@ function Index() {
     axios
       .delete(`http://localhost:3000/users/${user._id}`)
       .then((res) => console.log(res));
-    queryClient.invalidateQueries("create");
+    queryClient.invalidateQueries("users");
   };
 
   const updateUser = (user) => {};
